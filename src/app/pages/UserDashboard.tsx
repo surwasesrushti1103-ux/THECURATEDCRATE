@@ -163,13 +163,13 @@ export default function UserDashboard() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2 mb-4">
-                        {order.items.map((item: any, index: number) => (
+                        {(order.items || order.order_items || []).map((item: any, index: number) => (
                           <div key={index} className="flex justify-between text-sm">
                             <span className="text-gray-600">
-                              {item.product?.name} × {item.quantity}
+                              {(item.product || item.products)?.name} × {item.quantity}
                             </span>
                             <span className="font-semibold">
-                              ₹{(item.product?.price || 0) * item.quantity}
+                              ₹{((item.product || item.products)?.price || 0) * item.quantity}
                             </span>
                           </div>
                         ))}

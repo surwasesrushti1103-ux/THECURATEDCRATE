@@ -116,9 +116,9 @@ export default function SellerDashboard() {
   }
 
   const totalEarnings = orders.reduce((sum, order) => {
-    const orderTotal = order.items
-      .filter((item: any) => products.some((p) => p.id === item.productId))
-      .reduce((itemSum: number, item: any) => itemSum + (item.product?.price || 0) * item.quantity, 0);
+    const orderTotal = (order.items || order.order_items || [])
+      .filter((item: any) => products.some((p) => p.id === (item.productId || item.product_id)))
+      .reduce((itemSum: number, item: any) => itemSum + ((item.product || item.products)?.price || 0) * item.quantity, 0);
     return sum + orderTotal;
   }, 0);
 
@@ -393,15 +393,15 @@ export default function SellerDashboard() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      {order.items
-                        .filter((item: any) => products.some((p) => p.id === item.productId))
+                      {(order.items || order.order_items || [])
+                        .filter((item: any) => products.some((p) => p.id === (item.productId || item.product_id)))
                         .map((item: any, index: number) => (
                           <div key={index} className="flex justify-between text-sm mb-2">
                             <span className="text-gray-600">
-                              {item.product?.name} × {item.quantity}
+                              {(item.product || item.products)?.name} × {item.quantity}
                             </span>
                             <span className="font-semibold">
-                              ₹{(item.product?.price || 0) * item.quantity}
+                              ₹{((item.product || item.products)?.price || 0) * item.quantity}
                             </span>
                           </div>
                         ))}
